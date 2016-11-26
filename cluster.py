@@ -6,14 +6,19 @@ import time
 
 #global constants
 #How many points to have total
-totalPoints = 50
+totalPoints = 49
 #range of x locations possible of -x to x
-xRange = [-100,100]
+xRange = [-300,300]
 #range of y locations possible of -y to y
-yRange = [-100,100]
+yRange = [-300,300]
 #number of points per cluster
 clusterSize = 5
 
+testpoints = [[-50,-50],[-40,-50],[-30,-50],[-60,-60],[-70,-60],
+              [-50,100],[-60,110],[-80,120],[-70,40],[-60,50],
+              [40,-70],[60,-100],[50,-60],[30,-80],[40,-60],
+              [0,0],[0,1],[0,2],[-1,0],[-1,1],
+              [40,50],[60,60],[60,70],[40,70],[50,50]]
 
 #functions are good
 def createRandomPoints(count, x, y):
@@ -37,13 +42,12 @@ def getCluster(pts,size):
     theSum = 0
     #initialize a base minimum, using the distance from first few points to the first point
     for i in range(min(size,len(pts))):
-        minSum = minSum + (pts[0][0]-pts[i][0])**2 + (pts[0][1]-pts[i][1])**2
+        minSum = minSum + dist(pts[0],pts[i])
         results.append(pts[i])
     for j in range(len(pts)):
         t = []
         for k in range(len(pts)):
-            distval = (pts[j][0]-pts[k][0])**2 + (pts[j][1]-pts[k][1])**2
-            t.append({'pt':pts[k],'dist':distval})
+            t.append({'pt':pts[k],'dist':dist(pts[j],pts[k])})
         t.sort(key=lambda obj: obj['dist'])
         theSum = 0
         for m in range(min(size,len(pts))):
@@ -53,19 +57,21 @@ def getCluster(pts,size):
             results = []
             for i in range(min(size,len(pts))):
                 results.append(t[i]['pt'])
-    print "Cluster distance: ",math.sqrt(minSum)
+    print "Cluster avg distance: ",minSum/min(size,len(pts))
     return results
+def dist(src,dest):
+    return math.sqrt((src[0]-dest[0])**2 + (src[1]-dest[1])**2)
 def drawCluster(points):
     turtle.tracer(1)
     turtle.color("#%06X" % random.randint(0x0, 0xFFFFFF))
     for eachPoint in points:
+        print dist(points[0],eachPoint)
         turtle.penup()
         turtle.goto(points[0][0],points[0][1])
         turtle.dot(5)
         turtle.pendown()
         turtle.goto(eachPoint[0],eachPoint[1])
         turtle.dot(5)
-        
 def resetScreen():
     turtle.clearscreen()
     turtle.title("Cluster Finder")
