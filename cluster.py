@@ -8,9 +8,9 @@ import time
 #How many points to have total
 totalPoints = 49
 #range of x locations possible of -x to x
-xRange = [-300,300]
+xRange = [-100,100]
 #range of y locations possible of -y to y
-yRange = [-300,300]
+yRange = [-100,100]
 #number of points per cluster
 clusterSize = 5
 
@@ -64,11 +64,10 @@ def dist(src,dest):
 def drawCluster(points):
     turtle.tracer(1)
     turtle.color("#%06X" % random.randint(0x0, 0xFFFFFF))
+    turtle.penup()
+    turtle.goto(points[0][0],points[0][1])
+    turtle.dot(5)
     for eachPoint in points:
-        print dist(points[0],eachPoint)
-        turtle.penup()
-        turtle.goto(points[0][0],points[0][1])
-        turtle.dot(5)
         turtle.pendown()
         turtle.goto(eachPoint[0],eachPoint[1])
         turtle.dot(5)
